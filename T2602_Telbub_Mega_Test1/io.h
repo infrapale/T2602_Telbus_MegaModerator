@@ -38,43 +38,45 @@ INPX7   D42   PL7     INPY7   D38   PD7
 **/
 
 
-#define PORT_OUTX_DIR         DDRA    // Telbus --> Mega
-#define PORT_OUTY_DIR         DDRC    // Telbus --> Mega
-#define PORT_INPX_DIR         DDRL    // Mega --> Telbus 
+#define PORT_X_INP_DIR         DDRA    // Telbus --> Mega
+#define PORT_Y_INP_DIR         DDRC    // Telbus --> Mega
+#define PORT_X_OUT_DIR         DDRL    // Mega --> Telbus 
 
-#define PORT_OUTX_DATA_IN     PINA
-#define PORT_OUTY_DATA_IN     PINC
+#define PORT_X_DATA_INP        PINA
+#define PORT_Y_DATA_INP        PINC
+#define PORT_X_DATA_OUT        PORTL
 
-#define PORT_INPX_DATA_OUT    PORTL
-
-#define PORT_DATA_OUT          PORT_INPX_DATA_OUT
-#define PORT_DATA_INP          PORT_OUTX_DATA_IN
+#define PORT_DATA_OUT          PORT_X_DATA_OUT
+#define PORT_DATA_INP          PORT_X_DATA_INP
 
 // Input Pins
-#define PIN_OUTY_0_INP       37 
-#define PIN_OUTY_1_INP       36 
-#define PIN_OUTY_2_INP       35 
-#define PIN_OUTY_3_INP       34 
-#define PIN_OUTY_4_INP       33 
-#define PIN_OUTY_5_INP       32 
-#define PIN_OUTY_6_INP       31 
-#define PIN_OUTY_7_INP       30 
+#define PIN_Y_INP_0         37 
+#define PIN_Y_INP_1         36 
+#define PIN_Y_INP_2         35 
+#define PIN_Y_INP_3         34 
+#define PIN_Y_INP_4         33 
+#define PIN_Y_INP_5         32 
+#define PIN_Y_INP_6         31 
+#define PIN_Y_INP_7         30 
 // Output Pins
-#define PIN_INPY_0_OUT       A14
-#define PIN_INPY_1_OUT       A13
-#define PIN_INPY_2_OUT       A12
-#define PIN_INPY_3_OUT       A11
-#define PIN_INPY_4_OUT       41
-#define PIN_INPY_5_OUT       40
-#define PIN_INPY_6_OUT       39
-#define PIN_INPY_7_OUT       38
+#define PIN_Y_OUT_0       A14
+#define PIN_Y_OUT_1       A13
+#define PIN_Y_OUT_2       A12
+#define PIN_Y_OUT_3       A11
+#define PIN_Y_OUT_4       41
+#define PIN_Y_OUT_5       40
+#define PIN_Y_OUT_6       39
+#define PIN_Y_OUT_7       38
 
-#define PIN_INP_READY       PIN_OUTY_7_INP
-#define PIN_INP_ACK         PIN_INPY_7_OUT 
-#define PIN_OUT_READY       PIN_INPY_6_OUT
-#define PIN_OUT_ACK         PIN_OUTY_6_INP
+#define PIN_INP_RDY         PIN_Y_INP_7
+#define PIN_INP_ACK         PIN_Y_OUT_6
+#define PIN_OUT_RDY         PIN_Y_OUT_6
+#define PIN_OUT_ACK         PIN_Y_INP_6
 
 void io_initialize(void);
-
+void io_read_out_x_y(void);
+void io_get_byte(void);
+void io_toggle_test(void);
+void io_port_test(void);
 
 #endif

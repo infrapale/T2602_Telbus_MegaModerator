@@ -30,4 +30,7 @@ void comm_out_state_machine(void);
 
 void comm_test_loop(void); 
 
+void comm_test_serial3(void);
+String comm_rd_serial3(void);
+
 #endif

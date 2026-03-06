@@ -29,6 +29,57 @@ void comm_initialize(void)
 
 }
 
+String comm_rd_serial3(void) {
+    static String buffer = "";
+
+    while (Serial3.available() > 0) {
+        char c = Serial3.read();
+
+        if (c == '\r') {               // end of line
+            String line = buffer;      // copy completed line
+            buffer = "";               // reset for next line
+            return line;               // return the finished line
+        }
+
+        // optional: ignore LF if your sender uses CR+LF
+        if (c != '\n') {
+            buffer += c;
+        }
+    }
+
+    return ""; // no complete line yet
+}
+
+
+void comm_test_serial3() 
+{
+    String Str;
+    uint8_t cntr = 4;
+    //comm_test_loop();
+    Serial3.println("Hello");
+    delay(5);
+
+    while(cntr > 0) {
+        Str = comm_rd_serial3();
+        if(Str != ""){
+            Serial.print(Str);
+            Serial.println(cntr);
+            cntr = 0;
+        }
+        else {
+            cntr--;
+            delay(10);
+            if(cntr == 0) Serial.println("Timeout");
+        }
+
+    }
+    delay(100);
+}
+
+
+
+
+
 
 void comm_out_state_machine(void)
 {
@@ -60,25 +111,25 @@ unsigned long start_ms;
 
 void comm_test_loop(void) 
 {
-    PORT_INPX_DATA_OUT = out_data;
-    if (out_data < 63)  out_data++;
-    else out_data = 0;
-    delay(500);
-    // inp_data = PORT_OUTX_DATA_IN;
-    inp_data = PORT_OUTY_DATA_IN;
-    Serial.println(inp_data,HEX);
+    // PORT_INPX_DATA_OUT = out_data;
+    // if (out_data < 63)  out_data++;
+    // else out_data = 0;
+    // delay(500);
+    // // inp_data = PORT_OUTX_DATA_IN;
+    // inp_data = PORT_OUTY_DATA_IN;
+    // Serial.println(inp_data,HEX);
 
-    for(uint8_t i=0; i<8; i++){
-        Serial.print(digitalRead(pin_outy[i]));
-        Serial.print("-"); 
-    } 
-    Serial.println();
+    // for(uint8_t i=0; i<8; i++){
+    //     Serial.print(digitalRead(pin_outy[i]));
+    //     Serial.print("-"); 
+    // } 
+    // Serial.println();
 
-    for(uint8_t i=0; i<8; i++){
-        if(i==inpy_indx) digitalWrite(pin_inpy[i], HIGH );
-        else digitalWrite(pin_inpy[i], LOW );
-    } 
-    if(inpy_indx < 7) inpy_indx++; else inpy_indx=0;                                                              
+    // for(uint8_t i=0; i<8; i++){
+    //     if(i==inpy_indx) digitalWrite(pin_inpy[i], HIGH );
+    //     else digitalWrite(pin_inpy[i], LOW );
+    // } 
+    // if(inpy_indx < 7) inpy_indx++; else inpy_indx=0;                                                              
 }
 
 
@@ -88,7 +139,7 @@ void comm_test_loop(void)
 void out_wr_data(uint8_t u8)
 {
   PORT_DATA_OUT = u8;
-  digitalWrite(PIN_OUT_READY, LOW);
+  digitalWrite(PIN_OUT_RDY, LOW);
   //Serial.print("out_wr_data "); Serial.println(u8);
 }
 
